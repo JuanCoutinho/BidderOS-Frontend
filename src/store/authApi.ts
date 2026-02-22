@@ -32,11 +32,14 @@ export const authApi = createApi({
         me: builder.query<{ user: User }, void>({
             query: () => '/auth/me',
         }),
-        resumes: builder.query<{ id: Number, filename: string; string: any }[], void>({
+        resumes: builder.query<{ id: number; filename: string; created_at: string }[], void>({
             query: () => '/resumes',
         }),
-        uploadResume: builder.mutation<{ id: Number, filename: string; string: any }, { file: File }>({
-            query: (formData) => ({ url: '/resumes', method: 'POST', formData }),
+        uploadResume: builder.mutation<
+            { message: string; processed: string[]; errors?: { file: string; reason: string }[] },
+            FormData
+        >({
+            query: (formData) => ({ url: '/resumes', method: 'POST', body: formData }),
         }),
     }),
 });
