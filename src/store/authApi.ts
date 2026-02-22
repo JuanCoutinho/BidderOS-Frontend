@@ -32,6 +32,12 @@ export const authApi = createApi({
         me: builder.query<{ user: User }, void>({
             query: () => '/auth/me',
         }),
+        resumes: builder.query<{ id: Number, filename: string; string: any }[], void>({
+            query: () => '/resumes',
+        }),
+        uploadResume: builder.mutation<{ id: Number, filename: string; string: any }, { file: File }>({
+            query: (formData) => ({ url: '/resumes', method: 'POST', formData }),
+        }),
     }),
 });
 
