@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import UploadPage from './pages/UploadPage';
+import ResumesPage from './pages/ResumesPage';
 
 function AppInit() {
   const dispatch = useDispatch<AppDispatch>();
@@ -45,6 +46,11 @@ function App() {
             </ProtectedRoute>
           }
           />
+          <Route path="/resumes" element={
+            <ProtectedRoute>
+              <ResumesPage />
+            </ProtectedRoute>
+          } />
           <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
