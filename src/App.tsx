@@ -1,29 +1,49 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import { store } from './store/store';
+import type { RootState, AppDispatch } from './store/store';
+import { useMeQuery } from './store/authApi';
+import { setUser, setLoading, logout } from './store/authSlice';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 
+// Substitui o useEffect do AuthContext — verifica o token ao abrir o app
+function AppInit() {
+  const dispatch = useDispatch<AppDispatch>();
+  const token = useSelector((state: RootState) => state.auth.token);
+  const { data, error, isLoading } = useMeQuery(undefined, { skip: !token });
+
+  useEffect(() => {
+    if (!token) {
+      dispatch(setLoading(false));
+      return;
+    }
+    if (!isLoading) {
+      if (data) dispatch(setUser(data.user));
+      else if (error) dispatch(logout());
+      dispatch(setLoading(false));
+    }
+  }, [data, error, isLoading, token, dispatch]);
+
+  return null;
+}
+
 function App() {
   return (
-    <AuthProvider>
+    <Provider store={store}>
       <BrowserRouter>
+        <AppInit />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
-    </AuthProvider>
+    </Provider>
   );
 }
 

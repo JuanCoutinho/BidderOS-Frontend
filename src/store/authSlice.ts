@@ -1,16 +1,18 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-// Mesmo tipo User que está hoje em api.ts
-interface User { id: number; name: string; email: string; created_at: string; }
+import type { User } from './authApi';
+
 interface AuthState {
     user: User | null;
     token: string | null;
     loading: boolean;
 }
+
 const initialState: AuthState = {
     user: null,
     token: localStorage.getItem('token'),
     loading: true,
 };
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -33,5 +35,6 @@ const authSlice = createSlice({
         },
     },
 });
+
 export const { setCredentials, setUser, setLoading, logout } = authSlice.actions;
 export default authSlice.reducer;
