@@ -11,6 +11,7 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import UploadPage from './pages/UploadPage';
 import ResumesPage from './pages/ResumesPage';
+import RecommendationsPage from './pages/RecommendationsPage';
 
 function AppInit() {
   const dispatch = useDispatch<AppDispatch>();
@@ -40,22 +41,16 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/upload" element={
-            <ProtectedRoute>
-              <UploadPage />
-            </ProtectedRoute>
-          }
-          />
-          <Route path="/resumes" element={
-            <ProtectedRoute>
-              <ResumesPage />
-            </ProtectedRoute>
-          } />
+
           <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+          <Route path="/upload" element={<ProtectedRoute><UploadPage /></ProtectedRoute>} />
+          <Route path="/resumes" element={<ProtectedRoute><ResumesPage /></ProtectedRoute>} />
+          <Route path="/recommendations" element={<ProtectedRoute><RecommendationsPage /></ProtectedRoute>} />
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
-    </Provider >
+    </Provider>
   );
 }
 

@@ -41,7 +41,21 @@ export const authApi = createApi({
         >({
             query: (formData) => ({ url: '/resumes', method: 'POST', body: formData }),
         }),
+        recommendations: builder.mutation<{ id: number; filename: string; score: number; created_at: string }[], { job_description: string }>({
+            query: (body) => ({ url: '/recommendations', method: 'POST', body }),
+        }),
+        generateCoverLetter: builder.mutation<{ cover_letter: string }, { resume_id: number; job_description: string }>({
+            query: (body) => ({ url: '/recommendations/cover_letter', method: 'POST', body }),
+        }),
     }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useMeQuery, useResumesQuery, useUploadResumeMutation } = authApi;
+export const {
+    useLoginMutation,
+    useRegisterMutation,
+    useMeQuery,
+    useResumesQuery,
+    useUploadResumeMutation,
+    useRecommendationsMutation,
+    useGenerateCoverLetterMutation
+} = authApi;
