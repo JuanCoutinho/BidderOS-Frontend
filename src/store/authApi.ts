@@ -15,7 +15,7 @@ export interface AuthResponse {
 export const authApi = createApi({
     reducerPath: 'authApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: '/api/v1',
+        baseUrl: import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/v1` : '/api/v1',
         prepareHeaders: (headers, { getState }) => {
             const token = (getState() as { auth: { token: string | null } }).auth.token;
             if (token) headers.set('Authorization', `Bearer ${token}`);
